@@ -1,0 +1,1 @@
+# sentinel-cordova-plugin

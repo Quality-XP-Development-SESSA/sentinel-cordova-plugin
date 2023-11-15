@@ -2,6 +2,7 @@ package cordova.plugin.sentinel.sdk
 
 import com.qxdev.sentinel_sdk.SentinelProvider
 import com.qxdev.sentinel_sdk.cloud.data.auth.User
+import com.qxdev.sentinel_sdk.di.Koin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -10,14 +11,8 @@ import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
 import org.json.JSONArray
 import org.koin.core.context.GlobalContext.startKoin
-import com.qxdev.sentinel_sdk.di.Koin
-import org.koin.dsl.module
-import com.qxdev.sentinel_sdk.cloud.data.Response
-import android.app.Application
-import kotlinx.serialization.json.Json
 
-
-class AuthModule{
+class AuthModule {
    private val coroutineScope = CoroutineScope(Dispatchers.IO + Job())
 
    private val cloudProvider = SentinelProvider.cloudProvider
@@ -25,11 +20,7 @@ class AuthModule{
    private val authServices = cloudProvider.authCloudServices
 
    init {
-      startKoin { 
-         modules(
-            Koin.sentinelSDKModule("https://api-stage.sensys-iot.com")
-         ) 
-      }
+      startKoin { modules(Koin.sentinelSDKModule("https://api-stage.sensys-iot.com")) }
    }
 
    fun signIn(username: String, password: String, callbackContext: CallbackContext) {
@@ -43,14 +34,16 @@ class AuthModule{
 
             val result = responseResult.getOrNull()
 
-            if(result != null){
-               if(result.success){
+            if (result != null) {
+               if (result.success) {
                   callbackContext.success(result.data.toString())
                } else {
                   callbackContext.error(result.errorCode.toString())
                }
-            }else{
-               callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
+            } else {
+               callbackContext.error(
+                     "Request failed with Exception ${responseResult.exceptionOrNull()?.message}"
+               )
             }
          }
       }
@@ -60,7 +53,6 @@ class AuthModule{
 class CordovaPluginSentinelSDK : CordovaPlugin() {
 
    private val authModule = AuthModule()
-
 
    override fun execute(
          action: String,
@@ -91,6 +83,4 @@ class CordovaPluginSentinelSDK : CordovaPlugin() {
          callbackContext.error("Expected one non-empty string argument.")
       }
    }
-
-
 }

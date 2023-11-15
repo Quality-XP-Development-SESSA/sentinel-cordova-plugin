@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova.plugin.sentinel.sdk" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>cordova-plugin-sentinel-sdk</name>
+    <js-module name="CordovaPluginSentinelSDK" src="www/CordovaPluginSentinelSDK.js">
+        <clobbers target="CordovaSentinelPluginSDK" />
+    </js-module>
+        <platform name="android">
+        <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+        <config-file parent="/*" target="res/xml/config.xml">
+
+            <preference name="GradlePluginKotlinEnabled" value="true" />
+            <preference name="GradlePluginKotlinCodeStyle" value="official" />
+            <preference name="GradlePluginKotlinVersion" value="1.9.10" />
+
+            <feature name="CordovaPluginSentinelSDK">
+                <param name="android-package" value="cordova.plugin.sentinel.sdk.CordovaPluginSentinelSDK" />
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml" />
+        <source-file src="src/android/CordovaPluginSentinelSDK.kt" target-dir="src/main/kotlin/CordovaPluginSentinelSDK" />
+    </platform>
+</plugin>

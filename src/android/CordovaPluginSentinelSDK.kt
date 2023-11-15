@@ -1,20 +1,22 @@
 package cordova.plugin.sentinel.sdk
 
-import com.qxdev.sentinel_sdk.SentinelProvider
-import com.qxdev.sentinel_sdk.cloud.data.auth.User
+import android.app.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
 import org.json.JSONArray
 import org.koin.core.context.GlobalContext.startKoin
-import com.qxdev.sentinel_sdk.di.Koin
 import org.koin.dsl.module
+
+import com.qxdev.sentinel_sdk.cloud.data.auth.User
+import com.qxdev.sentinel_sdk.cloud.data.auth.UserData
 import com.qxdev.sentinel_sdk.cloud.data.Response
-import android.app.Application
-import kotlinx.serialization.json.Json
+import com.qxdev.sentinel_sdk.di.Koin
+import com.qxdev.sentinel_sdk.SentinelProvider
 
 
 class AuthModule{
@@ -33,26 +35,24 @@ class AuthModule{
    }
 
    fun signIn(username: String, password: String, callbackContext: CallbackContext) {
-      if (username == null && password == null) {
-         callbackContext.error("error")
-      } else {
-         coroutineScope.launch {
-            val responseResult =
-                  kotlin.runCatching { authServices.login(User(username.trim(), password.trim())) }
 
-            val result = responseResult.getOrNull()
+      coroutineScope.launch {
+         val responseResult =
+               kotlin.runCatching { authServices.login(User(username.trim(), password.trim())) }
 
-            if(result != null){
-               if(result.success){
-                  callbackContext.success(result.data.toString())
-               } else {
-                  callbackContext.error(result.errorCode.toString())
-               }
-            }else{
-               callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
+         val result = responseResult.getOrNull()
+
+         if(result != null){
+            if(result.success){
+               callbackContext.success(result.data.toString())
+            } else {
+               callbackContext.error(result.errorCode.toString())
             }
+         }else{
+            callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
          }
       }
+      
    }
 
    fun signOut(callbackContext: CallbackContext){
@@ -81,7 +81,7 @@ class AuthModule{
          val result = responseResult.getOrNull()
 
          if(result != null){
-            callbackContext.success(result.data.toString())
+            callbackContext.success(result.toString())
          } else {
             callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
          }
@@ -94,7 +94,7 @@ class AuthModule{
       } else {
          coroutineScope.launch {
             val responseResult = 
-               kotlin.runCatching { authServices.changePassword(User(email.trim()))
+               kotlin.runCatching { authServices.changePassword(UserData(email.trim())) }
 
             val result = responseResult.getOrNull()
 

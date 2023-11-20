@@ -42,7 +42,7 @@ class AuthModule {
             if(result.success){
                callbackContext.success(result.data.toString())
             } else {
-               callbackContext.error("Hola Ari")
+               callbackContext.error("Oops! Something went wrong")
             }
          }else{
             callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")

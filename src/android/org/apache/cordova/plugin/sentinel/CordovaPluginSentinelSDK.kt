@@ -31,12 +31,6 @@ class CordovaPluginSentinelSDK : CordovaPlugin() {
          args: JSONArray,
          callbackContext: CallbackContext
    ): Boolean {
-      if (action == "coolMethod") {
-         val firstNumber = args.getInt(0)
-         val secondNumber = args.getInt(1)
-         this.coolMethod(firstNumber, secondNumber, callbackContext)
-         return true
-      }
       if (action == "signIn") {
          val username = args.getString(0)
          val password = args.getString(1)
@@ -45,16 +39,4 @@ class CordovaPluginSentinelSDK : CordovaPlugin() {
       }
       return false
    }
-
-   private fun coolMethod(firstNumber: Int, secondNumber: Int, callbackContext: CallbackContext) {
-      if (firstNumber !== null && secondNumber !== null) {
-         val result = firstNumber + secondNumber
-         val message = "El resultado de $firstNumber + $secondNumber es $result"
-         callbackContext.success(message)
-      } else {
-         callbackContext.error("Expected one non-empty string argument.")
-      }
-   }
-
-
 }

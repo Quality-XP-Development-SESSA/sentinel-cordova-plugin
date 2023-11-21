@@ -1,21 +1,32 @@
 # sentinel-cordova-plugin
-
-### Set up
-
--   Clone repository:
-
+## _Set up_
+To add this plugins into your cordova project, for now you have to clone this repository
 ```sh
 git clone https://github.com/Quality-XP-Development-SESSA/sentinel-cordova-plugin.git
 ```
 
--   Make sure you have node, npm and Cordoba installed, and run:
-
-```sh
-npm install
+then, go to your cordova project and add it, Change 'directory' to the path where you cloned this repository
+```
+cordova plugin add 'directory'
+```
+Example:
+```
+cordova plugin add ~/Desktop/sentinel-cordova-plugin
 ```
 
--   cd into sentinel-cordova-plugin and start project.
+## _Credentials_
+Once the plugin is added, go to
+```
+plugins > cordova.plugin.sentinel.sdk > src > android > build.gradle
+```
+And change the username and password for a valid credentials
 
-```sh
-cd sentinel-cordova-plugin && cordova run browser
+## _Support_
+Just in case, that the project doesn works, into the cordova project go to
+```
+platforms > android > app > build.gradle
+```
+and delete the line 
+```
+apply plugin: 'kotlin-android-extensions'
 ```

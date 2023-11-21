@@ -5,30 +5,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.apache.cordova.CallbackContext
-import org.apache.cordova.CordovaPlugin
-import org.json.JSONArray
-import org.koin.core.context.GlobalContext.startKoin
+import org.json.JSONObject
 
 import com.qxdev.sentinel_sdk.cloud.data.auth.User
 import com.qxdev.sentinel_sdk.cloud.data.auth.UserData
 import com.qxdev.sentinel_sdk.cloud.data.Response
-import com.qxdev.sentinel_sdk.di.Koin
 import com.qxdev.sentinel_sdk.SentinelProvider
 
 class AuthModule {
    private val coroutineScope = CoroutineScope(Dispatchers.IO + Job())
-
    private val cloudProvider = SentinelProvider.cloudProvider
-
    private val authServices = cloudProvider.authCloudServices
-
-   init {
-      startKoin { 
-         modules(
-            Koin.sentinelSDKModule("https://api-stage.sensys-iot.com")
-         ) 
-      }
-   }
 
    fun signIn(username: String, password: String, callbackContext: CallbackContext) {
 

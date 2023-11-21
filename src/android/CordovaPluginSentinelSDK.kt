@@ -13,7 +13,7 @@ import org.apache.cordova.CordovaPlugin
 import org.json.JSONArray
 import org.koin.core.context.GlobalContext.startKoin
 
-class AuthModule{
+class AuthModule {
     private val coroutineScope = CoroutineScope(Dispatchers.IO + Job())
     private val cloudProvider = SentinelProvider.cloudProvider
     private val authServices = cloudProvider.authCloudServices
@@ -27,7 +27,9 @@ class AuthModule{
     }
 
     fun signIn(
-        username: String, password: String, callbackContext: CallbackContext,
+        username: String,
+        password: String,
+        callbackContext: CallbackContext,
     ) {
         coroutineScope.launch {
             val responseResult =

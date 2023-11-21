@@ -48,6 +48,29 @@ class CordovaPluginSentinelSDK : CordovaPlugin() {
          locationModule.getLocations(callbackContext)
          return true
       }
+      if (action == "getFilterLocation") {
+         val filterValue = args.getString(0)
+         locationModule.getFilterLocation(filterValue, callbackContext)
+         return true
+      }
+      if (action == "getSensors") {
+         val locationId = args.getString(0)
+         val filterValue = args.getString(1)
+         locationModule.getSensors(locationId, filterValue, callbackContext)
+         return true
+      }
+      if (action == "getGateways") {
+         val locationId = args.getString(0)
+         val filterValue = args.getString(1)
+         locationModule.getGateways(locationId, filterValue, callbackContext)
+         return true
+      }
+      if (action == "deleteLocation") {
+         val locationId = args.getString(0)
+         val transferLocationId = args.getString(1)
+         locationModule.getGateways(locationId, filterValue, callbackContext)
+         return true
+      }
       return false
    }
 }

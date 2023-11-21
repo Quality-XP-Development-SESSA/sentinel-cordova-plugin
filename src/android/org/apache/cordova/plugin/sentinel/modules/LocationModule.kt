@@ -18,9 +18,9 @@ class LocationModule {
     private val cloudProvider = SentinelProvider.cloudProvider
     private val locationServices = cloudProvider.locationsCloudServices
 
-    fun getLocations(callbackContext: CallbackContext){
+    fun getLocations(callbackContext: CallbackContext) {
         coroutineScope.launch {
-            val responseResult = kotlin.runCatching{
+            val responseResult = kotlin.runCatching {
                 locationServices.getLocation()
             }
 
@@ -40,4 +40,86 @@ class LocationModule {
         }
     }
 
+    fun getFilterLocation(filterValue: String, callbackContext: CallbackContext) {
+        coroutineScope.launch {
+            val responseResult = kotlin.runCatching {
+                locationServices.filterLocationList(filterValue)
+            }
+
+            val result = responseResult.getOrNull()
+
+            if (result != null) {
+                if (result.success) {
+                    val jsonList = Json.encodeToString(result.data)
+                    callbackContext.success(jsonList)
+                } else {
+                    callbackContext.error(result.errorCode.toString())
+                }
+            } else {
+                callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
+            }
+        }
+    }
+
+    fun getSensors(locationId: String, filterValue: String, callbackContext: CallbackContext) {
+        coroutineScope.launch {
+            val responseResult = kotlin.runCatching {
+                locationServices.getSensors(locationId, filterValue)
+            }
+
+            val result = responseResult.getOrNull()
+
+            if(result != null) {
+                if (result.success) {
+                    val jsonList = Json.encodeToString(result.data)
+                    callbackContext.success(jsonList)
+                } else {
+                    callbackContext.error(result.errorCode.toString())
+                }
+            } else {
+                callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
+            }
+        }
+    }
+
+    fun getGateways(locationId: String, filterValue: String, callbackContext: CallbackContext) {
+            coroutineScope.launch {
+            val responseResult = kotlin.runCatching {
+                locationServices.getGateways(locationId, filterValue)
+            }
+
+            val result = responseResult.getOrNull()
+
+            if(result != null) {
+                if (result.success) {
+                    val jsonList = Json.encodeToString(result.data)
+                    callbackContext.success(jsonList)
+                } else {
+                    callbackContext.error(result.errorCode.toString())
+                }
+            } else {
+                callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
+            }
+        }
+    }
+
+    fun deleteLocation(locationId: Int, transferLocationId: String?, callbackContext: CallbackContext){
+        coroutineScope.launch {
+            val responseResult = kotlin.runCatching {
+                locationServices.deleteLocation(locationId, transferLocationId)
+            }
+
+            val result = response.getOrNull()
+
+            if (result != null) {
+                if (result.success) {
+                    callbackContext.success(result.data.toString())
+                } else {
+                    callbackContext.error(result.errorCode.toString())
+                }
+            } else {
+                callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
+            }
+        }
+    }
 }

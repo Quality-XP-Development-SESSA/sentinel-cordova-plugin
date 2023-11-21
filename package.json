@@ -8,6 +8,9 @@
       "android"
     ]
   },
+  "scripts": {
+    "ktlint" : "ktlint --format"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Quality-XP-Development-SESSA/sentinel-cordova-plugin.git"

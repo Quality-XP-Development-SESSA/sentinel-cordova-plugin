@@ -107,6 +107,10 @@ class AuthModule {
             }
         }
     }
+
+    fun foo() {
+        return "Ktlint test"
+    }
 }
 
 class CordovaPluginSentinelSDK : CordovaPlugin() {

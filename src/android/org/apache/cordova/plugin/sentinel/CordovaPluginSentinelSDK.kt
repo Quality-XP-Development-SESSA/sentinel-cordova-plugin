@@ -1,24 +1,40 @@
-package org.apache.cordova.plugin
+package org.apache.cordova.plugin.sentinel
 
+import com.qxdev.sentinel_sdk.di.Koin
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
-import org.apache.cordova.plugin.modules.AuthModule
+import org.apache.cordova.plugin.sentinel.interfaces.ModuleDelegate
+import org.apache.cordova.plugin.sentinel.modules.AuthModule
+import org.apache.cordova.plugin.sentinel.modules.LocationModule
 import org.json.JSONArray
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
 
 class CordovaPluginSentinelSDK : CordovaPlugin() {
     private val authModule = AuthModule()
+
+    private val authModuleDelegate: ModuleDelegate = AuthModule()
+    private val locationModuleDelegate: ModuleDelegate = LocationModule()
+
+    init {
+        startKoin {
+            modules(
+                Koin.sentinelSDKModule("https://api-stage.sensys-iot.com"),
+            )
+        }
+    }
 
     override fun execute(
         action: String,
         args: JSONArray,
         callbackContext: CallbackContext,
     ): Boolean {
-        if (action == "signIn") {
-            val username = args.getString(0)
-            val password = args.getString(1)
-            authModule.signIn(username, password, callbackContext)
-            return true
+        val (module, actionExec) = action.split(":")
+
+        return when (module) {
+            "AuthModule" -> authModuleDelegate.executeAction(actionExec, args, callbackContext)
+            "LocationModule" -> locationModuleDelegate.executeAction(actionExec, args, callbackContext)
+            else -> false
         }
-        return false
     }
 }

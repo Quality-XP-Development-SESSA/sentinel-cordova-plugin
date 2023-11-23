@@ -13,7 +13,7 @@
             <preference name="GradlePluginKotlinVersion" value="1.9.10" />
 
             <feature name="CordovaPluginSentinelSDK">
-                <param name="android-package" value="org.apache.cordova.plugin.CordovaPluginSentinelSDK" />
+                <param name="android-package" value="org.apache.cordova.plugin.sentinel.CordovaPluginSentinelSDK" />
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml" />
@@ -21,5 +21,6 @@
         
         <source-file src="src/android/org/apache/cordova/plugin/sentinel/modules/AuthModule.kt" target-dir="java/org/apache/cordova/plugin/sentinel/" />
         <source-file src="src/android/org/apache/cordova/plugin/sentinel/modules/LocationModule.kt" target-dir="java/org/apache/cordova/plugin/sentinel/" />
+        <source-file src="src/android/org/apache/cordova/plugin/sentinel/interfaces/ModuleDelegate.kt" target-dir="java/org/apache/cordova/plugin/sentinel/" />
     </platform>
 </plugin>

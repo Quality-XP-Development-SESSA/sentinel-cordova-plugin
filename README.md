@@ -42,7 +42,7 @@ you can find the build.gradle on
 ```
 platforms > android > app > src > main 
 ```
-Then, you have to create a Kotlin file where is MainActivity.java
+Then, you have to create a Kotlin file called ConfigKoin.kt into the same folder where is MainActivity.java
 ```sh
 // <YOUR_PACKAGE>
 

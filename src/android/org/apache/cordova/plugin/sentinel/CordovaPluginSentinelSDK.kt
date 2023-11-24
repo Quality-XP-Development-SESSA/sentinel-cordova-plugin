@@ -1,28 +1,17 @@
 package org.apache.cordova.plugin.sentinel
 
-import com.qxdev.sentinel_sdk.di.Koin
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
 import org.apache.cordova.plugin.sentinel.interfaces.ModuleDelegate
 import org.apache.cordova.plugin.sentinel.modules.AuthModule
 import org.apache.cordova.plugin.sentinel.modules.LocationModule
 import org.json.JSONArray
-import org.koin.core.context.GlobalContext.startKoin
-import org.koin.dsl.module
 
 class CordovaPluginSentinelSDK : CordovaPlugin() {
     private val authModule = AuthModule()
 
     private val authModuleDelegate: ModuleDelegate = AuthModule()
     private val locationModuleDelegate: ModuleDelegate = LocationModule()
-
-    init {
-        startKoin {
-            modules(
-                Koin.sentinelSDKModule("https://api-stage.sensys-iot.com"),
-            )
-        }
-    }
 
     override fun execute(
         action: String,

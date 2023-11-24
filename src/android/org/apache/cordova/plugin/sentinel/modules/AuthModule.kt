@@ -29,6 +29,19 @@ class AuthModule : ModuleDelegate {
                     signIn(username, password, callbackContext)
                     true
                 }
+                "signOut" -> {
+                    signOut(callbackContext)
+                    true
+                }
+                "accountType" -> {
+                    accountType(callbackContext)
+                    true
+                }
+                "recoverPassword" -> {
+                    val email = args.getString(0)
+                    recoverPassword(email, callbackContext)
+                    true
+                }
                 else -> false
             }
 
@@ -109,65 +122,6 @@ class AuthModule : ModuleDelegate {
                         callbackContext.success(result.data.toString())
                     } else {
                         callbackContext.error("Oops! Something went wrong")
-                    }
-                } else {
-                    callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
-                }
-            }
-        }
-    }
-
-    fun signOut(callbackContext: CallbackContext) {
-        coroutineScope.launch {
-            val responseResult =
-                kotlin.runCatching { authServices.logout() }
-
-            val result = responseResult.getOrNull()
-
-            if (result != null) {
-                if (result.success) {
-                    callbackContext.success(result.data.toString())
-                } else {
-                    callbackContext.error(result.errorCode.toString())
-                }
-            } else {
-                callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
-            }
-        }
-    }
-
-    fun accountType(callbackContext: CallbackContext) {
-        coroutineScope.launch {
-            val responseResult =
-                kotlin.runCatching { authServices.getAccountType() }
-            val result = responseResult.getOrNull()
-
-            if (result != null) {
-                callbackContext.success(result.toString())
-            } else {
-                callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
-            }
-        }
-    }
-
-    fun recoverPassword(
-        email: String,
-        callbackContext: CallbackContext,
-    ) {
-        if (email == null) {
-            callbackContext.error("error")
-        } else {
-            coroutineScope.launch {
-                val responseResult =
-                    kotlin.runCatching { authServices.changePassword(UserData(email.trim())) }
-
-                val result = responseResult.getOrNull()
-
-                if (result != null) {
-                    if (result.success) {
-                        callbackContext.success(result.data.toString())
-                    } else {
-                        callbackContext.error(result.errorCode.toString())
                     }
                 } else {
                     callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")

@@ -9,11 +9,62 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.plugin.sentinel.interfaces.ModuleDelegate
+import org.json.JSONArray
 
 class DevicesModule : ModuleDelegate {
     private val coroutineScope = CoroutineScope(Dispatchers.IO + Job())
     private val cloudProvider = SentinelProvider.cloudProvider
     private val deviceServices = cloudProvider.devicesCloudServices
+
+    override fun executeAction(
+        action: String,
+        args: JSONArray,
+        callbackContext: CallbackContext,
+    ): Boolean {
+        val result =
+            when (action) {
+                "getSensors" -> {
+                    val filterValue = args.getString(0)
+                    getSensors(filterValue, callbackContext)
+                    true
+                }
+                "deleteSensors" -> {
+                    val ids = args.getString(0)
+                    deleteSensors(ids, callbackContext)
+                    true
+                }
+                "editSensorName" -> {
+                    val id = args.getString(0)
+                    val name = args.getString(1)
+                    editSensorName(id, name, callbackContext)
+                    true
+                }
+                "getGateways" -> {
+                    val filterValue = args.getString(0)
+                    getGateways(filterValue, callbackContext)
+                    true
+                }
+                "deleteGateways" -> {
+                    val id = args.getString(0)
+                    deleteGateways(id, callbackContext)
+                    true
+                }
+                "editGatewaysName" -> {
+                    val id = args.getString(0)
+                    val name = args.getString(1)
+                    editGatewaysName(id, name, callbackContext)
+                    true
+                }
+                "getCustomerDevices" -> {
+                    val customerId = args.getString(0)
+                    getCustomerDevices(customerId, callbackContext)
+                    true
+                }
+                else -> false
+            }
+
+        return result
+    }
 
     fun getSensors(
         filter: String?,

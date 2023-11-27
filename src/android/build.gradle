@@ -5,9 +5,6 @@ android {
     }
 
     dependencies {
-        // Koin
-        implementation 'io.insert-koin:koin-android:3.3.3'
-
         // Sentinel SDK
         implementation 'com.qxdev.sentinel-sdk:android-sdk:1.0.0'
 

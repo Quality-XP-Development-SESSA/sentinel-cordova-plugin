@@ -1,0 +1,41 @@
+name: Sentinel-Cordova-Plugin Pull Request
+
+run-name: Triggered by @${{ github.actor }}
+
+on:
+  pull_request:
+
+  workflow_dispatch:
+
+jobs:
+  JavaScript-Lint-Check:
+    runs-on: [self-hosted, macos-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: ./package-lock.json
+    - name: Install Dependencies
+      run: |
+        npm install
+    - name: Run JavaScript Lint Check
+      run: |
+        npm run eslint
+
+  Kotlin-Lint-Check:
+    runs-on: [self-hosted, macos-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: ./package-lock.json
+    - name: Run ktlintCheck
+      run: |
+        npm run ktlint
+      

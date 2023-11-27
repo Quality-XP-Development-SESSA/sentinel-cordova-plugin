@@ -9,7 +9,8 @@
     ]
   },
   "scripts": {
-    "ktlint": "ktlint --format",
+    "ktlint-fix": "ktlint --format",
+    "ktlint": "ktlint",
     "eslint-fix" : "npm run eslint -- --fix",
     "eslint" : "npx eslint ./www/"
   },

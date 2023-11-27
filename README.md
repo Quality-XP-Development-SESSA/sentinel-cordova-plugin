@@ -29,6 +29,56 @@ plugins > cordova.plugin.sentinel.sdk > src > android > build.gradle
 ```
 And change the username and password for a valid credentials
 
+## _Koin_
+To use this plugin you have to initialize Koin in your Cordova project, so, first of all let's implement koin and SentinelSDK.
+```sh
+// Koin
+implementation 'io.insert-koin:koin-android:<KOIN_VERSION>'
+
+// Sentinel SDK
+implementation 'com.qxdev.sentinel-sdk:android-sdk:<VERSION>'
+```
+you can find the build.gradle on 
+```
+platforms > android > app > src > main 
+```
+Then, you have to create a Kotlin file called ConfigKoin.kt into the same folder where is MainActivity.java
+```sh
+// <YOUR_PACKAGE>
+
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
+
+import com.qxdev.sentinel_sdk.di.Koin
+
+class ConfigKoin{
+    companion object {
+        fun initialize(){
+            startKoin {
+                modules(
+                    Koin.sentinelSDKModule("https://api-stage.sensys-iot.com"),
+                )
+            }
+        }
+    }
+}
+```
+Finally into the MainActivity import the kotlin file and call the initialize function
+```
+import <YOUR_PACKAGE>.ConfigKoin;
+
+public class MainActivity extends CordovaActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ConfigKoin.Companion.initialize();
+
+        // ...
+    }
+}
+```
+
 ## _Support_
 Just in case, that the project doesn't works, into the cordova project go to
 ```

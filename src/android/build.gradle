@@ -6,7 +6,6 @@ android {
 
     dependencies {
         // Sentinel SDK
-        // implementation 'com.qxdev.sentinel-sdk:android-sdk:1.0.0-SNAPSHOT'
         implementation 'com.qxdev.sentinel-sdk:android-sdk:1.0.0'
 
         // Coroutines

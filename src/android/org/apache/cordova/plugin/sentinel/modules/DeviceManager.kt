@@ -18,32 +18,27 @@ class DeviceManager : ModuleDelegate {
         args: JSONArray,
         callbackContext: CallbackContext,
     ): Boolean {
-        var result = true
-
-        result =
-            when (action) {
-                "connectDevice" -> {
-                    val ssid = args.getString(0)
-                    connectDevice(ssid, callbackContext)
-                    true
-                }
-                "getNetworksAvailable" -> {
-                    getNetworksAvailable(callbackContext)
-                    true
-                }
-                "setupOnboarding" -> {
-                    val locationId = args.getString(0)
-                    val ssid = args.getString(1)
-                    val password = args.getString(2)
-                    val deviceType = args.getString(3)
-                    val customerId = args.getString(4)
-                    setupOnboarding(locationId, ssid, password, deviceType, customerId, callbackContext)
-                    true
-                }
-                else -> false
+        return when (action) {
+            "connectDevice" -> {
+                val ssid = args.getString(0)
+                connectDevice(ssid, callbackContext)
+                true
             }
-
-        return result
+            "getNetworksAvailable" -> {
+                getNetworksAvailable(callbackContext)
+                true
+            }
+            "setupOnboarding" -> {
+                val locationId = args.getString(0)
+                val ssid = args.getString(1)
+                val password = args.getString(2)
+                val deviceType = args.getString(3)
+                val customerId = args.getString(4)
+                setupOnboarding(locationId, ssid, password, deviceType, customerId, callbackContext)
+                true
+            }
+            else -> false
+        }
     }
 
     private fun connectDevice(

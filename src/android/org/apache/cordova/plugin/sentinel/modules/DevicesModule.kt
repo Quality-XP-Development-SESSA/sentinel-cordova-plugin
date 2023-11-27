@@ -66,7 +66,7 @@ class DevicesModule : ModuleDelegate {
         return result
     }
 
-    fun getSensors(
+    private fun getSensors(
         filter: String?,
         callbackContext: CallbackContext,
     ) {
@@ -89,7 +89,7 @@ class DevicesModule : ModuleDelegate {
         }
     }
 
-    fun deleteSensors(
+    private fun deleteSensors(
         ids: String,
         callbackContext: CallbackContext,
     ) {
@@ -113,7 +113,7 @@ class DevicesModule : ModuleDelegate {
         }
     }
 
-    fun editSensorName(
+    private fun editSensorName(
         id: String,
         name: String,
         callbackContext: CallbackContext,
@@ -137,7 +137,7 @@ class DevicesModule : ModuleDelegate {
         }
     }
 
-    fun getGateways(
+    private fun getGateways(
         filter: String?,
         callbackContext: CallbackContext,
     ) {
@@ -160,7 +160,7 @@ class DevicesModule : ModuleDelegate {
         }
     }
 
-    fun deleteGateways(
+    private fun deleteGateways(
         id: String,
         callbackContext: CallbackContext,
     ) {
@@ -183,7 +183,7 @@ class DevicesModule : ModuleDelegate {
         }
     }
 
-    fun editGatewaysName(
+    private fun editGatewaysName(
         id: String,
         name: String,
         callbackContext: CallbackContext,
@@ -207,7 +207,7 @@ class DevicesModule : ModuleDelegate {
         }
     }
 
-    fun getCustomerDevices(
+    private fun getCustomerDevices(
         customerId: String,
         callbackContext: CallbackContext,
     ) {

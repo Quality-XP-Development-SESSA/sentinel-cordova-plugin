@@ -44,5 +44,5 @@ jobs:
         java-version: '11' 
     - name: Run ktlintCheck
       run: |
-        ktlint --format
+        npm run ktlint
       

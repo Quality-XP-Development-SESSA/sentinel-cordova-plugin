@@ -37,7 +37,7 @@ jobs:
         cache-dependency-path: ./package-lock.json
     - name: Install Dependencies
       run: |
-        sdk install ktlint
+        sudo snap install ktlint --edge
     - uses: actions/setup-java@v3
       with:
         distribution: 'zulu'

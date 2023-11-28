@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.plugin.sentinel.interfaces.ModuleDelegate
 import org.json.JSONArray
@@ -19,23 +20,18 @@ class CustomersModule : ModuleDelegate {
         args: JSONArray,
         callbackContext: CallbackContext,
     ): Boolean {
-        var result = true
-
-        result =
-            when (action) {
-                "getCustomerList" -> {
-                    getCustomerList(callbackContext)
-                    true
-                }
-                "getFilterCustomerList" -> {
-                    val filterValue = args.getString(0)
-                    getFilterCustomerList(filterValue, callbackContext)
-                    true
-                }
-                else -> false
+        return when (action) {
+            "getCustomerList" -> {
+                getCustomerList(callbackContext)
+                true
             }
-
-        return result
+            "getFilterCustomerList" -> {
+                val filterValue = args.getString(0)
+                getFilterCustomerList(filterValue, callbackContext)
+                true
+            }
+            else -> false
+        }
     }
 
     private fun getCustomerList(callbackContext: CallbackContext) {
@@ -45,7 +41,7 @@ class CustomersModule : ModuleDelegate {
             if (result != null) {
                 if (result.success) {
                     val jsonList = Json.encodeToString(result.data)
-                    callbackContext.success(jsonList)
+                    callbackContext.success(jsonList.toString())
                 } else {
                     callbackContext.error(result.errorCode.toString())
                 }
@@ -65,7 +61,7 @@ class CustomersModule : ModuleDelegate {
             if (result != null) {
                 if (result.success) {
                     val jsonList = Json.encodeToString(result.data)
-                    callbackContext.success(jsonList)
+                    callbackContext.success(jsonList.toString())
                 } else {
                     callbackContext.error(result.errorCode.toString())
                 }

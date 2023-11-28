@@ -1,5 +1,6 @@
 package org.apache.cordova.plugin.sentinel
 
+import com.qxdev.sentinel_sdk.di.Koin
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaInterface
 import org.apache.cordova.CordovaPlugin
@@ -10,6 +11,8 @@ import org.apache.cordova.plugin.sentinel.modules.DevicesModule
 import org.apache.cordova.plugin.sentinel.modules.LocationModule
 import org.apache.cordova.plugin.sentinel.modules.WifiDiscovery
 import org.json.JSONArray
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
 
 class CordovaPluginSentinelSDK : CordovaPlugin() {
     private var appContext: Context? = null
@@ -24,6 +27,14 @@ class CordovaPluginSentinelSDK : CordovaPlugin() {
     private val devicesModuleDelegate: ModuleDelegate = DevicesModule()
     private val locationModuleDelegate: ModuleDelegate = LocationModule()
     private val wifiDiscoveryModuleDelegate: ModuleDelegate = WifiDiscovery(appContext)
+
+    init {
+        startKoin {
+            modules(
+                Koin.sentinelSDKModule("https://api-stage.sensys-iot.com"),
+            )
+        }
+    }
 
     override fun execute(
         action: String,

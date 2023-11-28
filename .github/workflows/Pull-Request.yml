@@ -9,7 +9,7 @@ on:
 
 jobs:
   JavaScript-Lint-Check:
-    runs-on: [self-hosted, macos-latest]
+    runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
@@ -26,7 +26,7 @@ jobs:
         npm run eslint
 
   Kotlin-Lint-Check:
-    runs-on: [self-hosted, macos-latest]
+    runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js

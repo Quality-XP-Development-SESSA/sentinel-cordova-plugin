@@ -34,12 +34,15 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: "**/package-lock.json"
+        cache-dependency-path: ./package-lock.json
+    - name: Install Dependencies
+      run: |
+        sdk install ktlint
     - uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
         java-version: '11' 
     - name: Run ktlintCheck
       run: |
-        npm run ktlint
+        ktlint --format
       

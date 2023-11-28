@@ -21,41 +21,36 @@ class LocationModule : ModuleDelegate {
         args: JSONArray,
         callbackContext: CallbackContext,
     ): Boolean {
-        var result = true
-
-        result =
-            when (action) {
-                "getLocations" -> {
-                    getLocations(callbackContext)
-                    true
-                }
-                "getFilterLocation" -> {
-                    val filterValue = args.getString(0)
-                    getFilterLocation(filterValue, callbackContext)
-                    true
-                }
-                "getSensors" -> {
-                    val locationId = args.getString(0)
-                    val filterValue = args.getString(1)
-                    getSensors(locationId, filterValue, callbackContext)
-                    true
-                }
-                "getGateways" -> {
-                    val locationId = args.getString(0)
-                    val filterValue = args.getString(1)
-                    getGateways(locationId, filterValue, callbackContext)
-                    true
-                }
-                "deleteLocation" -> {
-                    val locationId = args.getString(0)
-                    val filterValue = args.getString(1)
-                    getGateways(locationId, filterValue, callbackContext)
-                    true
-                }
-                else -> false
+        return when (action) {
+            "getLocations" -> {
+                getLocations(callbackContext)
+                true
             }
-
-        return result
+            "getFilterLocation" -> {
+                val filterValue = args.getString(0)
+                getFilterLocation(filterValue, callbackContext)
+                true
+            }
+            "getSensors" -> {
+                val locationId = args.getString(0)
+                val filterValue = args.getString(1)
+                getSensors(locationId, filterValue, callbackContext)
+                true
+            }
+            "getGateways" -> {
+                val locationId = args.getString(0)
+                val filterValue = args.getString(1)
+                getGateways(locationId, filterValue, callbackContext)
+                true
+            }
+            "deleteLocation" -> {
+                val locationId = args.getString(0)
+                val filterValue = args.getString(1)
+                getGateways(locationId, filterValue, callbackContext)
+                true
+            }
+            else -> false
+        }
     }
 
     private fun getLocations(callbackContext: CallbackContext) {

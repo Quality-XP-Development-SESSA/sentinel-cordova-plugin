@@ -21,31 +21,28 @@ class AuthModule : ModuleDelegate {
         args: JSONArray,
         callbackContext: CallbackContext,
     ): Boolean {
-        val result =
-            when (action) {
-                "signIn" -> {
-                    val username = args.getString(0)
-                    val password = args.getString(1)
-                    signIn(username, password, callbackContext)
-                    true
-                }
-                "signOut" -> {
-                    signOut(callbackContext)
-                    true
-                }
-                "accountType" -> {
-                    accountType(callbackContext)
-                    true
-                }
-                "recoverPassword" -> {
-                    val email = args.getString(0)
-                    recoverPassword(email, callbackContext)
-                    true
-                }
-                else -> false
+        return when (action) {
+            "signIn" -> {
+                val username = args.getString(0)
+                val password = args.getString(1)
+                signIn(username, password, callbackContext)
+                true
             }
-
-        return result
+            "signOut" -> {
+                signOut(callbackContext)
+                true
+            }
+            "accountType" -> {
+                accountType(callbackContext)
+                true
+            }
+            "recoverPassword" -> {
+                val email = args.getString(0)
+                recoverPassword(email, callbackContext)
+                true
+            }
+            else -> false
+        }
     }
 
     fun signIn(

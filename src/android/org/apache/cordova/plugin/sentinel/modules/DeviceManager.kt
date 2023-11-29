@@ -4,10 +4,12 @@ import com.qxdev.sentinel_sdk.onboarding.DeviceOnboardingControllerImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.plugin.sentinel.interfaces.ModuleDelegate
+import org.json.JSONArray
 
 class DeviceManager : ModuleDelegate {
     private val coroutineScope = CoroutineScope(Dispatchers.IO + Job())
@@ -29,12 +31,12 @@ class DeviceManager : ModuleDelegate {
                 true
             }
             "setupOnboarding" -> {
-                val locationId = args.getString(0)
+                val idLocation = args.getString(0)
                 val ssid = args.getString(1)
                 val password = args.getString(2)
                 val deviceType = args.getString(3)
                 val customerId = args.getString(4)
-                setupOnboarding(locationId, ssid, password, deviceType, customerId, callbackContext)
+                setupOnboarding(idLocation, ssid, password, deviceType, callbackContext, customerId)
                 true
             }
             else -> false
@@ -46,40 +48,35 @@ class DeviceManager : ModuleDelegate {
         callbackContext: CallbackContext,
     ) {
         coroutineScope.launch {
-            try {
-                deviceConnect.connectToDevice(ssid) { result ->
-                    callbackContext.success(result.toString())
+            val responseResult =
+                kotlin.runCatching {
+                    deviceConnect.connectToDevice(ssid) { result ->
+                        callbackContext.success(result.toString())
+                    }
                 }
-            } catch (e: Exception) {
-                callbackContext.error(e.message)
-            }
         }
     }
 
     private fun getNetworksAvailable(callbackContext: CallbackContext) {
         coroutineScope.launch {
-            try {
-                val responseResult = deviceConnect.listNetworks()
-                val jsonList = Json.encodeToString(responseResult)
-                callbackContext.success(jsonList)
-            } catch (e: Exception) {
-                callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
-            }
+            val responseResult = kotlin.runCatching { deviceConnect.listNetworks() }
+            val jsonList = Json.encodeToString(responseResult)
+            callbackContext.success(jsonList.toString())
         }
     }
 
     private fun setupOnboarding(
-        locationId: String,
+        id_Location: String,
         ssid: String,
         password: String,
         deviceType: String,
-        customerId: String?,
         callbackContext: CallbackContext,
+        customerId: String?,
     ) {
         coroutineScope.launch {
             val responseResult =
                 kotlin.runCatching {
-                    deviceConnect.startOnboarding(locationId, ssid, password, customerId, deviceType)
+                    deviceConnect.startOnboarding(id_Location, ssid, password, customerId, deviceType)
                 }
 
             val result = responseResult.getOrNull()
@@ -92,7 +89,7 @@ class DeviceManager : ModuleDelegate {
                     callbackContext.error(result.errorCode.toString())
                 }
             } else {
-                callbackContext.error("Request failed with Exception ${responseResult.exceptionOrNull()?.message}")
+                callbackContext.error("Request failed with Exception")
             }
         }
     }

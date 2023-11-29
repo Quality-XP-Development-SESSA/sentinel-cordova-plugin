@@ -44,9 +44,9 @@ class LocationModule : ModuleDelegate {
                 true
             }
             "deleteLocation" -> {
-                val locationId = args.getString(0)
-                val filterValue = args.getString(1)
-                getGateways(locationId, filterValue, callbackContext)
+                val locationId = args.getInt(0)
+                val transferLocationId = args.getString(1)
+                deleteLocation(locationId, transferLocationId, callbackContext)
                 true
             }
             else -> false

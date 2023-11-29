@@ -1,5 +1,6 @@
 package org.apache.cordova.plugin.sentinel.modules
 
+import android.content.Context
 import com.qxdev.sentinel_sdk.wifi.wifiDiscovery.WifiScannerImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

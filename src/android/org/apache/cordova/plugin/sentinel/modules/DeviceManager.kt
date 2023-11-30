@@ -1,5 +1,6 @@
 package org.apache.cordova.plugin.sentinel.modules
 
+import com.qxdev.sentinel_sdk.onboarding.DeviceOnboardingControllerImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -10,7 +11,7 @@ import org.json.JSONArray
 
 class DeviceManager : ModuleDelegate {
     private val coroutineScope = CoroutineScope(Dispatchers.IO + Job())
-    // private val deviceConnect = DeviceOnboardingControllerImpl()
+    private val deviceConnect = DeviceOnboardingControllerImpl()
 
     override fun executeAction(
         action: String,

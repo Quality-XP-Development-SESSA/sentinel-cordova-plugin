@@ -1,5 +1,6 @@
 package org.apache.cordova.plugin.sentinel
 
+import android.content.Context
 import com.qxdev.sentinel_sdk.di.Koin
 import com.qxdev.sentinel_sdk.onboarding.ConnectionToDevice
 import com.qxdev.sentinel_sdk.onboarding.interfaces.WifiManager
@@ -14,6 +15,8 @@ import org.apache.cordova.plugin.sentinel.modules.LocationModule
 import org.json.JSONArray
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
+// import org.apache.cordova.plugin.sentinel.modules.WifiDiscovery
+// import android.content.Context
 
 /*
     Delete this imports
@@ -25,20 +28,17 @@ import org.koin.dsl.module
     import com.qxdev.sentinel_sdk.onboarding.interfaces.WifiManager
  */
 
-// import org.apache.cordova.plugin.sentinel.modules.WifiDiscovery
-
 class CordovaPluginSentinelSDK : CordovaPlugin() {
-    // val context: Context = cordova.activity.applicationContext
+    private val cordovaContext: Context = cordova.context.applicationContext
 
     // Delete this init
     init {
         startKoin {
             modules(
                 module {
-                    single<WifiManager> { ConnectionToDevice(cordova.activity.applicationContext) }
+                    single<WifiManager> { ConnectionToDevice(cordovaContext) }
                 },
                 Koin.sentinelSDKModule("https://api-stage.sensys-iot.com"),
-                // Koin.sentinelSDKModule("192.168.12.1:7000"),
             )
         }
     }
@@ -50,7 +50,7 @@ class CordovaPluginSentinelSDK : CordovaPlugin() {
     private val devicesModuleDelegate: ModuleDelegate = DevicesModule()
     private val locationModuleDelegate: ModuleDelegate = LocationModule()
     private val customersModuleDelegate: ModuleDelegate = CustomersModule()
-    // private val wifiDiscoveryModuleDelegate: ModuleDelegate = WifiDiscovery(context)
+    // private val wifiDiscoveryModuleDelegate: ModuleDelegate = WifiDiscovery(cordova.activity.applicationContext)
 
     override fun execute(
         action: String,

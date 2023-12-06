@@ -45,7 +45,7 @@ class AuthModule : ModuleDelegate {
         }
     }
 
-    fun signIn(
+    private fun signIn(
         username: String,
         password: String,
         callbackContext: CallbackContext,
@@ -68,7 +68,7 @@ class AuthModule : ModuleDelegate {
         }
     }
 
-    fun signOut(callbackContext: CallbackContext) {
+    private fun signOut(callbackContext: CallbackContext) {
         coroutineScope.launch {
             val responseResult =
                 kotlin.runCatching { authServices.logout() }
@@ -87,7 +87,7 @@ class AuthModule : ModuleDelegate {
         }
     }
 
-    fun accountType(callbackContext: CallbackContext) {
+    private fun accountType(callbackContext: CallbackContext) {
         coroutineScope.launch {
             val responseResult =
                 kotlin.runCatching { authServices.getAccountType() }
@@ -101,7 +101,7 @@ class AuthModule : ModuleDelegate {
         }
     }
 
-    fun recoverPassword(
+    private fun recoverPassword(
         email: String,
         callbackContext: CallbackContext,
     ) {

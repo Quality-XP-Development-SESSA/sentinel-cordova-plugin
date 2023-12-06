@@ -42,20 +42,25 @@ you can find the build.gradle on
 ```
 platforms > android > app > src > main 
 ```
-Then, you have to create a Kotlin file called ConfigKoin.kt into the same folder where is MainActivity.java
+Then, you have to create a Kotlin file where is MainActivity.java
 ```sh
 // <YOUR_PACKAGE>
 
+import android.content.Context
+import com.qxdev.sentinel_sdk.di.Koin
+import com.qxdev.sentinel_sdk.onboarding.ConnectionToDevice
+import com.qxdev.sentinel_sdk.onboarding.interfaces.WifiManager
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 
-import com.qxdev.sentinel_sdk.di.Koin
-
 class ConfigKoin{
     companion object {
-        fun initialize(){
+        fun initialize(context: Context){
             startKoin {
                 modules(
+                    module {
+                        single<WifiManager> { ConnectionToDevice(context) }
+                    },
                     Koin.sentinelSDKModule("https://api-stage.sensys-iot.com"),
                 )
             }
@@ -72,7 +77,7 @@ public class MainActivity extends CordovaActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ConfigKoin.Companion.initialize();
+        ConfigKoin.Companion.initialize(this.getApplicationContext());
 
         // ...
     }
@@ -80,11 +85,19 @@ public class MainActivity extends CordovaActivity {
 ```
 
 ## _Support_
-Just in case, that the project doesn't works, into the cordova project go to
+Cordova build the project with some deprecated values or properties, so we need to fix it manually, so please go to
 ```
 platforms > android > app > build.gradle
 ```
 and delete the line 
 ```
 apply plugin: 'kotlin-android-extensions'
+```
+Finally, go to the AndroidManifest.xml wheres is located in
+```
+platforms > android > app > src > main
+```
+and add the next android property into application tag
+```sh
+android:usesCleartextTraffic="true"
 ```

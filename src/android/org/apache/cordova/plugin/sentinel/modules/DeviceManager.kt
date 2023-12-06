@@ -5,6 +5,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.plugin.sentinel.interfaces.ModuleDelegate
 import org.json.JSONArray
@@ -60,11 +62,13 @@ class DeviceManager : ModuleDelegate {
 
     private fun getNetworksAvailable(callbackContext: CallbackContext) {
         coroutineScope.launch {
-            callbackContext.success("Hola")
-            // val responseResult = kotlin.runCatching { deviceConnect.listNetworks() }
-            // callbackContext.success(responseResult.toString())
-            // val jsonList = Json.encodeToString(responseResult)
-            // callbackContext.success(jsonList)
+            try {
+                val responseResult = deviceConnect.listNetworks()
+                val jsonList = Json.encodeToString(responseResult)
+                callbackContext.success(jsonList)
+            } catch (e: Exception) {
+                callbackContext.error(e.toString())
+            }
         }
     }
 

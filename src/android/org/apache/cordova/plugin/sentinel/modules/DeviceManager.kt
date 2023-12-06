@@ -21,44 +21,43 @@ class DeviceManager : ModuleDelegate {
         callbackContext: CallbackContext,
     ): Boolean {
         return when (action) {
-            // "connectDevice" -> {
-            //     val ssid = args.getString(0)
-            //     connectDevice(ssid, callbackContext)
-            //     true
-            // }
+            "connectDevice" -> {
+                val ssid = args.getString(0)
+                connectDevice(ssid, callbackContext)
+                true
+            }
             "getNetworksAvailable" -> {
                 getNetworksAvailable(callbackContext)
                 true
             }
-            // "setupOnboarding" -> {
-            //     val idLocation = args.getString(0)
-            //     val ssid = args.getString(1)
-            //     val password = args.getString(2)
-            //     val deviceType = args.getString(3)
-            //     val customerId = args.getString(4)
-            //     setupOnboarding(idLocation, ssid, password, deviceType, callbackContext, customerId)
-            //     true
-            // }
+            "setupOnboarding" -> {
+                val idLocation = args.getString(0)
+                val ssid = args.getString(1)
+                val password = args.getString(2)
+                val deviceType = args.getString(3)
+                val customerId = args.getString(4)
+                setupOnboarding(idLocation, ssid, password, deviceType, customerId, callbackContext)
+                true
+            }
             else -> false
         }
     }
 
-    // private fun connectDevice(
-    //     ssid: String,
-    //     callbackContext: CallbackContext,
-    // ) {
-    //     coroutineScope.launch {
-    //         try {
-    //             val responseResult =
-    //                 deviceConnect.connectToDevice(ssid) { result ->
-    //                     callbackContext.success(result.toString())
-    //                 }
-    //         }
-    //         catch(e: Exception) {
-    //             callbackContext.error(e.toString())
-    //         }
-    //     }
-    // }
+    private fun connectDevice(
+        ssid: String,
+        callbackContext: CallbackContext,
+    ) {
+        coroutineScope.launch {
+            try {
+                val responseResult =
+                    deviceConnect.connectToDevice(ssid) { result ->
+                        callbackContext.success(result.toString())
+                    }
+            } catch (e: Exception) {
+                callbackContext.error(e.toString())
+            }
+        }
+    }
 
     private fun getNetworksAvailable(callbackContext: CallbackContext) {
         coroutineScope.launch {
@@ -72,32 +71,32 @@ class DeviceManager : ModuleDelegate {
         }
     }
 
-    // private fun setupOnboarding(
-    //     id_Location: String,
-    //     ssid: String,
-    //     password: String,
-    //     deviceType: String,
-    //     callbackContext: CallbackContext,
-    //     customerId: String?,
-    // ) {
-    //     coroutineScope.launch {
-    //         val responseResult =
-    //             kotlin.runCatching {
-    //                 deviceConnect.startOnboarding(id_Location, ssid, password, customerId, deviceType)
-    //             }
+    private fun setupOnboarding(
+        id_Location: String,
+        ssid: String,
+        password: String,
+        deviceType: String,
+        customerId: String,
+        callbackContext: CallbackContext,
+    ) {
+        coroutineScope.launch {
+            val responseResult =
+                kotlin.runCatching {
+                    deviceConnect.startOnboarding(id_Location, ssid, password, customerId, deviceType)
+                }
 
-    //         val result = responseResult.getOrNull()
+            val result = responseResult.getOrNull()
 
-    //         if (result != null) {
-    //             if (result.success) {
-    //                 val jsonValue = Json.encodeToString(result.data)
-    //                 callbackContext.success(jsonValue.toString())
-    //             } else {
-    //                 callbackContext.error(result.errorCode.toString())
-    //             }
-    //         } else {
-    //             callbackContext.error("Request failed with Exception")
-    //         }
-    //     }
-    // }
+            if (result != null) {
+                if (result.success) {
+                    val jsonValue = Json.encodeToString(result.data)
+                    callbackContext.success(jsonValue.toString())
+                } else {
+                    callbackContext.error(result.errorCode.toString())
+                }
+            } else {
+                callbackContext.error("Request failed with Exception")
+            }
+        }
+    }
 }

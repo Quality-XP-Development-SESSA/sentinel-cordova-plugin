@@ -1,21 +1,90 @@
+[brew]: <https://docs.brew.sh/Installation>
+
 # sentinel-cordova-plugin
-
-### Set up
-
--   Clone repository:
-
+## _Set up_
+To add this plugins into your cordova project, for now you have to clone this repository
 ```sh
 git clone https://github.com/Quality-XP-Development-SESSA/sentinel-cordova-plugin.git
 ```
 
--   Make sure you have node, npm and Cordoba installed, and run:
-
-```sh
-npm install
+then, go to your cordova project and add it, Change 'directory' to the path where you cloned this repository
+```
+cordova plugin add 'directory'
+```
+Example:
+```
+cordova plugin add ~/Desktop/sentinel-cordova-plugin
 ```
 
--   cd into sentinel-cordova-plugin and start project.
-
+## _Ktlint_
+To use the ktlint script into the plugin you have to install [Brew][brew], then execute this command
 ```sh
-cd sentinel-cordova-plugin && cordova run browser
+brew install ktlint
+```
+
+## _Credentials_
+Once the plugin is added, go to
+```
+plugins > cordova.plugin.sentinel.sdk > src > android > build.gradle
+```
+And change the username and password for a valid credentials
+
+## _Koin_
+To use this plugin you have to initialize Koin in your Cordova project, so, first of all let's implement koin and SentinelSDK.
+```sh
+// Koin
+implementation 'io.insert-koin:koin-android:<KOIN_VERSION>'
+
+// Sentinel SDK
+implementation 'com.qxdev.sentinel-sdk:android-sdk:<VERSION>'
+```
+you can find the build.gradle on 
+```
+platforms > android > app > src > main 
+```
+Then, you have to create a Kotlin file called ConfigKoin.kt into the same folder where is MainActivity.java
+```sh
+// <YOUR_PACKAGE>
+
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
+
+import com.qxdev.sentinel_sdk.di.Koin
+
+class ConfigKoin{
+    companion object {
+        fun initialize(){
+            startKoin {
+                modules(
+                    Koin.sentinelSDKModule("https://api-stage.sensys-iot.com"),
+                )
+            }
+        }
+    }
+}
+```
+Finally into the MainActivity import the kotlin file and call the initialize function
+```
+import <YOUR_PACKAGE>.ConfigKoin;
+
+public class MainActivity extends CordovaActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ConfigKoin.Companion.initialize();
+
+        // ...
+    }
+}
+```
+
+## _Support_
+Just in case, that the project doesn't works, into the cordova project go to
+```
+platforms > android > app > build.gradle
+```
+and delete the line 
+```
+apply plugin: 'kotlin-android-extensions'
 ```

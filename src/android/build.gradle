@@ -1,0 +1,30 @@
+android {
+    compileOptions {
+        sourceCompatibility = 1.11
+        targetCompatibility = 1.11
+    }
+
+    dependencies {
+        // Sentinel SDK
+        implementation 'com.qxdev.sentinel-sdk:android-sdk:1.0.0'
+
+        // Coroutines
+        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+        // Serialization
+        implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven {
+            url = uri("https://maven.pkg.github.com/Quality-XP-Development-SESSA/sentinel-master-shared-setup-app-sdk")
+            credentials {
+                username = 'USERNAME'
+                password = 'PASSWORD'
+            }
+        }
+    }
+}
